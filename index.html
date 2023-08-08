@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap" rel="stylesheet">
 </head>
 <body>
-    <button class="rock" id="play">Rock</button>
-    <button class="paper" id="play">Paper</button>
-    <button class="scissors" id="play">Scissors</button>
+    <h1>Do you have what it takes to beat the machines?</h1>
+    <div class="choices">
+    <button class="rock" id="play"><img src="./rock.png"></button>
+    <button class="paper" id="play"><img src="./paper.png"></button>
+    <button class="scissors" id="play"><img src="./scissors.png"></button>
+    </div>
     <table class="score">
         <tr>
             <th>You</th>
@@ -39,26 +44,13 @@
             } else {
                 return `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)}`; 
             }
-        }1
-        // function game() {
-        //     let playerScore = 0;
-        //     let computerScore = 0;
-        //     for (let i = 0; i < 5; i++) {
-        //         console.log(`Round ${i + 1}. Make a choice.`);
-        //         var playerSelection = prompt("Choose rock, paper, or scissors.");
-        //         var result = playRound(playerSelection, getComputerChoice());
-        //         if (result.charAt(4) === 'W') playerScore++;
-        //         else if (result.charAt(4) === 'L') computerScore++;
-        //         console.log(result);
-        //         console.log(`Scoreboard \nPlayer: ${playerScore}\nComputer: ${computerScore}`);
-        //     }
-        // }
+        }
         const buttons = document.querySelectorAll("#play");
-        const result = document.createElement('div');
+        const result = document.createElement('h3');
         const table = document.querySelector(".score");
         const playerScore = document.querySelector(".player");
         const computerScore = document.querySelector(".computer");
-        const final = document.createElement('p');
+        const final = document.createElement('h2');
         buttons.forEach(button => {
         button.addEventListener('click', () => {
             result.textContent = playRound(button.className, getComputerChoice());
@@ -67,8 +59,8 @@
             if (playerScore.textContent > 4 || computerScore.textContent > 4) {
                 buttons.forEach(button => button.disabled = true);
                 if (playerScore.textContent > 4) {
-                    final.textContent = "You win this game. Play again.";                    
-                } else { final.textContent = "Computer wins. Play again."; }
+                    final.textContent = "You have annihilated the machines.";                    
+                } else { final.textContent = "Humanity will fade away into oblivion."; final.style.color = 'red';}
                 table.parentElement.appendChild(final);
             }
             })
@@ -83,7 +75,22 @@
             final.textContent = "";
             buttons.forEach(button => button.disabled = false);
         })
-        
+        const columnCount = table.rows[0].cells.length;
+
+        // Find the maximum width for each column
+        const maxColumnWidths = Array.from({ length: columnCount }, () => 0);
+
+        for (let row of table.rows) {
+        for (let i = 0; i < columnCount; i++) {
+            const cellWidth = row.cells[i].getBoundingClientRect().width;
+            maxColumnWidths[i] = Math.max(maxColumnWidths[i], cellWidth);
+        }
+        }
+
+        // Set the width of each column to the maximum width
+        for (let i = 0; i < columnCount; i++) {
+        table.rows[0].cells[i].style.width = `${maxColumnWidths[i]}px`;
+        }
         
     </script>
 </body>
