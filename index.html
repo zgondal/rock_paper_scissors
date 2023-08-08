@@ -6,6 +6,20 @@
     <title>Rock Paper Scissors</title>
 </head>
 <body>
+    <button class="rock play">Rock</button>
+    <button class="paper play">Paper</button>
+    <button class="scissors play">Scissors</button>
+    <table class="score">
+        <tr>
+            <th>You</th>
+            <th>Computer</th>
+        </tr>
+        <tr>
+            <td class="player">0</td>
+            <td class="computer">0</td>
+        </tr>
+    </table>
+    <button class="reset">Play Again</button>
     <script>
         function getComputerChoice() {
             const randomNumber = Math.floor(Math.random() * 3);
@@ -26,20 +40,50 @@
                 return `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)}`; 
             }
         }
-        function game() {
-            let playerScore = 0;
-            let computerScore = 0;
-            for (let i = 0; i < 5; i++) {
-                console.log(`Round ${i + 1}. Make a choice.`);
-                var playerSelection = prompt("Choose rock, paper, or scissors.");
-                var result = playRound(playerSelection, getComputerChoice());
-                if (result.charAt(4) === 'W') playerScore++;
-                else if (result.charAt(4) === 'L') computerScore++;
-                console.log(result);
-                console.log(`Scoreboard \nPlayer: ${playerScore}\nComputer: ${computerScore}`);
+        // function game() {
+        //     let playerScore = 0;
+        //     let computerScore = 0;
+        //     for (let i = 0; i < 5; i++) {
+        //         console.log(`Round ${i + 1}. Make a choice.`);
+        //         var playerSelection = prompt("Choose rock, paper, or scissors.");
+        //         var result = playRound(playerSelection, getComputerChoice());
+        //         if (result.charAt(4) === 'W') playerScore++;
+        //         else if (result.charAt(4) === 'L') computerScore++;
+        //         console.log(result);
+        //         console.log(`Scoreboard \nPlayer: ${playerScore}\nComputer: ${computerScore}`);
+        //     }
+        // }
+        const buttons = document.querySelectorAll(".play");
+        const result = document.createElement('div');
+        const table = document.querySelector(".score");
+        const playerScore = document.querySelector(".player");
+        const computerScore = document.querySelector(".computer");
+        const final = document.createElement('p');
+        buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            result.textContent = playRound(button.className, getComputerChoice());
+            if (result.textContent.charAt(4) === 'W') playerScore.textContent++;
+            else if (result.textContent.charAt(4) === 'L') computerScore.textContent++;
+            if (playerScore.textContent > 4 || computerScore.textContent > 4) {
+                buttons.forEach(button => button.disabled = true);
+                if (playerScore.textContent > 4) {
+                    final.textContent = "You win this game. Play again.";                    
+                } else { final.textContent = "Computer wins. Play again."; }
+                table.parentElement.appendChild(final);
             }
-        }
-        game();
+            })
+            
+        });
+        table.parentElement.insertBefore(result, table);
+        const reset = document.querySelector(".reset");
+        reset.addEventListener('click', () => {
+            result.textContent = "";
+            playerScore.textContent = 0;
+            computerScore.textContent = 0;
+            final.textContent = "";
+            buttons.forEach(button => button.disabled = false);
+        })
+        
         
     </script>
 </body>
