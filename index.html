@@ -6,9 +6,9 @@
     <title>Rock Paper Scissors</title>
 </head>
 <body>
-    <button class="rock play">Rock</button>
-    <button class="paper play">Paper</button>
-    <button class="scissors play">Scissors</button>
+    <button class="rock" id="play">Rock</button>
+    <button class="paper" id="play">Paper</button>
+    <button class="scissors" id="play">Scissors</button>
     <table class="score">
         <tr>
             <th>You</th>
@@ -39,7 +39,7 @@
             } else {
                 return `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)}`; 
             }
-        }
+        }1
         // function game() {
         //     let playerScore = 0;
         //     let computerScore = 0;
@@ -53,7 +53,7 @@
         //         console.log(`Scoreboard \nPlayer: ${playerScore}\nComputer: ${computerScore}`);
         //     }
         // }
-        const buttons = document.querySelectorAll(".play");
+        const buttons = document.querySelectorAll("#play");
         const result = document.createElement('div');
         const table = document.querySelector(".score");
         const playerScore = document.querySelector(".player");
