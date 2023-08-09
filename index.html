@@ -37,44 +37,52 @@
             const playerScore = keys.indexOf(playerSelection.toLowerCase());
             const computerScore = keys.indexOf(computerSelection.toLowerCase());
             const result = (playerScore - computerScore + 3) % 3;
+            const winMessage = `You Win! ${playerSelection.charAt(0).toUpperCase() + 
+                playerSelection.toLowerCase().slice(1)} beats ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)}`;
+            const loseMessage = `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)}`;
             if (result == 1) {
-                return `You Win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)} beats ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)}`;
+                return winMessage;
             } else if (result == 0) {
                 return "Tie";
             } else {
-                return `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.toLowerCase().slice(1)} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1)}`; 
+                return loseMessage; 
             }
         }
-        const buttons = document.querySelectorAll("#play");
-        const result = document.createElement('h3');
-        const table = document.querySelector(".score");
-        const playerScore = document.querySelector(".player");
-        const computerScore = document.querySelector(".computer");
-        const final = document.createElement('h2');
-        buttons.forEach(button => {
-        button.addEventListener('click', () => {
+
+        function play(button) {
             result.textContent = playRound(button.className, getComputerChoice());
             if (result.textContent.charAt(4) === 'W') playerScore.textContent++;
             else if (result.textContent.charAt(4) === 'L') computerScore.textContent++;
             if (playerScore.textContent > 4 || computerScore.textContent > 4) {
                 buttons.forEach(button => button.disabled = true);
                 if (playerScore.textContent > 4) {
-                    final.textContent = "You have annihilated the machines.";                    
+                    final.textContent = "You have annihilated the machines."; final.style.color = 'white';                   
                 } else { final.textContent = "Humanity will fade away into oblivion."; final.style.color = 'red';}
                 table.parentElement.appendChild(final);
             }
-            })
-            
-        });
-        table.parentElement.insertBefore(result, table);
-        const reset = document.querySelector(".reset");
-        reset.addEventListener('click', () => {
+        }
+        
+        function reset() {
             result.textContent = "";
             playerScore.textContent = 0;
             computerScore.textContent = 0;
             final.textContent = "";
             buttons.forEach(button => button.disabled = false);
-        })
+        }
+
+        const buttons = document.querySelectorAll("#play");
+        const result = document.createElement('h3');
+        const table = document.querySelector(".score");
+        const playerScore = document.querySelector(".player");
+        const computerScore = document.querySelector(".computer");
+        const final = document.createElement('h2');
+        
+        buttons.forEach(button => {
+        button.addEventListener('click', () => play(button));
+        });
+        table.parentElement.insertBefore(result, table);
+        const resetButton = document.querySelector(".reset");
+        resetButton.addEventListener('click', reset);
         const columnCount = table.rows[0].cells.length;
 
         // Find the maximum width for each column
